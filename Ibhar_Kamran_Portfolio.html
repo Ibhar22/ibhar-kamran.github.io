@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ibhar Kamran — Mechanical Engineering Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0C0F14;
+    --bg-card: #141820;
+    --bg-card-hover: #1A2030;
+    --accent: #4DA8DA;
+    --accent-glow: rgba(77, 168, 218, 0.15);
+    --accent-bright: #6BC5F0;
+    --text: #E8ECF1;
+    --text-secondary: #8B95A5;
+    --text-dim: #5A6370;
+    --border: #1E2633;
+    --tag-bg: rgba(77, 168, 218, 0.1);
+    --tag-border: rgba(77, 168, 218, 0.25);
+    --success: #4ADE80;
+    --warm: #F59E0B;
+    --coral: #F472B6;
+  }
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* Subtle background grid */
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-image: 
+      linear-gradient(rgba(77,168,218,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(77,168,218,0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 2rem; position: relative; z-index: 1; }
+
+  /* ===== HERO ===== */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    position: relative;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    top: 10%; right: -20%;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-content { position: relative; z-index: 2; }
+  .hero-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--accent);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards 0.2s;
+  }
+  .hero-label::before {
+    content: '';
+    display: inline-block;
+    width: 24px; height: 2px;
+    background: var(--accent);
+  }
+  .hero h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(3rem, 7vw, 5.5rem);
+    font-weight: 400;
+    line-height: 1.1;
+    letter-spacing: -1px;
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards 0.4s;
+  }
+  .hero h1 span { color: var(--accent); }
+  .hero-sub {
+    font-size: 1.15rem;
+    color: var(--text-secondary);
+    max-width: 600px;
+    margin-bottom: 2.5rem;
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards 0.6s;
+  }
+  .hero-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards 0.8s;
+  }
+  .hero-meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .hero-meta-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+  }
+  .hero-meta-value {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--text);
+  }
+  .hero-meta-value a {
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.3s;
+  }
+  .hero-meta-value a:hover { border-bottom-color: var(--accent); }
+
+  /* ===== SECTION ===== */
+  section { padding: 6rem 0; }
+  .section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--accent);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+  .section-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 400;
+    margin-bottom: 3rem;
+    letter-spacing: -0.5px;
+  }
+
+  /* ===== PROJECT CARDS ===== */
+  .project-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2.5rem;
+    margin-bottom: 2rem;
+    transition: all 0.4s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .project-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 4px; height: 100%;
+    background: var(--accent);
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+  .project-card:hover {
+    background: var(--bg-card-hover);
+    border-color: rgba(77,168,218,0.2);
+    transform: translateY(-2px);
+  }
+  .project-card:hover::before { opacity: 1; }
+
+  .project-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+  .project-number {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    margin-bottom: 0.25rem;
+  }
+  .project-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.6rem;
+    font-weight: 400;
+    line-height: 1.3;
+  }
+  .project-course {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    background: rgba(255,255,255,0.04);
+    padding: 6px 14px;
+    border-radius: 6px;
+    white-space: nowrap;
+  }
+  .project-desc {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    margin-bottom: 1.5rem;
+    max-width: 800px;
+  }
+
+  .project-highlights {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  .highlight {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .highlight-icon {
+    flex-shrink: 0;
+    width: 8px; height: 8px;
+    margin-top: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+  .highlight-text {
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+  }
+  .highlight-text strong { color: var(--text); font-weight: 600; }
+
+  .project-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--accent);
+    background: var(--tag-bg);
+    border: 1px solid var(--tag-border);
+    padding: 4px 12px;
+    border-radius: 20px;
+    letter-spacing: 0.5px;
+  }
+
+  /* ===== SKILLS ===== */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+  .skill-group {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 2rem;
+  }
+  .skill-group-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 1rem;
+  }
+  .skill-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .skill-item {
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+    background: rgba(255,255,255,0.03);
+    padding: 6px 14px;
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.05);
+  }
+
+  /* ===== CONTACT ===== */
+  .contact-section {
+    text-align: center;
+    padding: 6rem 0 8rem;
+  }
+  .contact-section .section-label { justify-content: center; }
+  .contact-section .section-label::after { display: none; }
+  .contact-links {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    margin-top: 2rem;
+  }
+  .contact-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 28px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    color: var(--text);
+    text-decoration: none;
+    font-size: 0.92rem;
+    font-weight: 500;
+    transition: all 0.3s;
+  }
+  .contact-link:hover {
+    border-color: var(--accent);
+    background: var(--accent-glow);
+    color: var(--accent-bright);
+  }
+  .contact-link svg { width: 18px; height: 18px; }
+
+  .footer {
+    text-align: center;
+    padding: 2rem 0;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--text-dim);
+  }
+
+  /* ===== ANIMATIONS ===== */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 768px) {
+    .container { padding: 0 1.25rem; }
+    .project-card { padding: 1.75rem; }
+    .project-highlights { grid-template-columns: 1fr; }
+    .hero-meta { gap: 1.25rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== HERO ===== -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-content">
+      <div class="hero-label">Mechanical Engineer</div>
+      <h1>Ibhar <span>Kamran</span></h1>
+      <p class="hero-sub">Mechanical engineer with experience spanning aerospace inspections, FDA-regulated medical devices, and thermal systems design. I build things that are manufacturable, compliant, and reliable.</p>
+      <div class="hero-meta">
+        <div class="hero-meta-item">
+          <span class="hero-meta-label">Education</span>
+          <span class="hero-meta-value">B.S. Mechanical Engineering — Calvin University</span>
+        </div>
+        <div class="hero-meta-item">
+          <span class="hero-meta-label">Location</span>
+          <span class="hero-meta-value">Open to relocate anywhere in the US</span>
+        </div>
+        <div class="hero-meta-item">
+          <span class="hero-meta-label">Contact</span>
+          <span class="hero-meta-value"><a href="mailto:kamranibhar@live.com">kamranibhar@live.com</a></span>
+        </div>
+        <div class="hero-meta-item">
+          <span class="hero-meta-label">Phone</span>
+          <span class="hero-meta-value">616-256-6785</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PROJECTS ===== -->
+<section id="projects">
+  <div class="container">
+    <div class="section-label">Portfolio</div>
+    <h2 class="section-title">Selected Projects</h2>
+
+    <!-- Project 1: Feed Flex -->
+    <div class="project-card">
+      <div class="project-header">
+        <div>
+          <div class="project-number">01 — Senior Design Capstone</div>
+          <div class="project-title">Feed Flex — Enteral Feeding Device</div>
+        </div>
+        <div class="project-course">ENGR 340 · Apr 2025</div>
+      </div>
+      <p class="project-desc">Designed and built a proof-of-concept peristaltic enteral feeding pump as a Class 2 medical device. The device addresses tube jamming, cleaning difficulties, and poor usability found in existing solutions like the Moog Infinity pump. Delivered a functional prototype with touchscreen GUI, rechargeable battery system, and modular pump assembly — all within a $368 budget.</p>
+      <div class="project-highlights">
+        <div class="highlight">
+          <div class="highlight-icon"></div>
+          <div class="highlight-text"><strong>Designed modular pump housing</strong> in SolidWorks with full GD&T specifications and 3D-printed prototypes</div>
+        </div>
+        <div class="highlight">
+          <div class="highlight-icon"></div>
+          <div class="highlight-text"><strong>Flow accuracy within 5%</strong> across 0.1–600 mL/hr range, calibrated against FDA 510(k) requirements</div>
+        </div>
+        <div class="highlight">
+          <div class="highlight-icon"></div>
+          <div class="highlight-text"><strong>24-hour battery life</strong> on a single charge using optimized Li-ion power management with UPS HAT</div>
+        </div>
+        <div class="highlight">
+          <div class="highlight-icon"></div>
+          <div class="highlight-text"><strong>640 person-hours</strong> across mechanical, electrical, and software domains; $175 under budget</div>
+        </div>
+      </div>
+      <div class="project-tags">
+        <span class="tag">SolidWorks</span>
+        <span class="tag">GD&T</span>
+        <span class="tag">3D Printing</span>
+        <span class="tag">FDA Design Controls</span>
+        <span class="tag">Raspberry Pi</span>
+        <span class="tag">Peristaltic Pump</span>
+        <span class="tag">Tolerance Analysis</span>
+        <span class="tag">DFM</span>
+      </div>
+    </div>
+
+    <!-- Project 2: Solar Farm -->
+    <div class="project-card">
+      <div class="project-header">
+        <div>
+          <div class="project-number">02 — Renewable Energy</div>
+          <div class="project-title">Solar Farm Feasibility Study — Calvin University</div>
+        </div>
+        <div class="project-course">ENGR 333 · Dec 2024</div>
+      </div>
+      <p class="project-desc">Conducted a comprehensive feasibility analysis for photovoltaic installations across Calvin University's campus to support the university's 2057 carbon neutrality goal. Evaluated four mounting categories — ground, rooftop, carpark, and off-campus — across 15+ specific sites, calculating structural loads, electrical sizing, energy output, and financial returns.</p>
+      <div class="project-highlights">
+        <div class="highlight">
+          <div class="highlight-icon"></div>
+          <div class="highlight-text"><strong>21.04% total carbon offset</strong> of Calvin's power usage across all analyzed projects</div>
+        </div>
+        <div class="highlight">
+          <div class="highlight-icon"></div>
+          <div class="highlight-text"><strong>Best IRR of 10.95%</strong> achieved by Venema Aquatic Center rooftop installation</div>
+        </div>
+        <div class="highlight">
+          <div class="highlight-icon"></div>
+          <div class="highlight-text"><strong>15+ sites analyzed</strong> with structural load calculations, BOM, and cost-per-watt comparisons</div>
+        </div>
+        <div class="highlight">
+          <div class="highlight-icon"></div>
+          <div class="highlight-text"><strong>Performance modeling</strong> predicting long-term energy output, payback period, and ROI per site</div>
+        </div>
+      </div>
+      <div class="project-tags">
+        <span class="tag">Structural Analysis</span>
+        <span class="tag">Financial Modeling</span>
+        <span class="tag">Renewable Energy</span>
+        <span class="tag">PV System Design</span>
+        <span class="tag">BOM & Cost Analysis</span>
+        <span class="tag">Grid-Connected Systems</span>
+      </div>
+    </div>
+
+    <!-- Project 3: Plant Scherer -->
+    <div class="project-card">
+      <div class="project-header">
+        <div>
+          <div class="project-number">03 — Thermal Systems Design</div>
+          <div class="project-title">Exergoeconomic Optimization — Plant Scherer (3,720 MW Coal Plant)</div>
+        </div>
+        <div class="project-course">ENGR 333 · Dec 2024</div>
+      </div>
+      <p class="project-desc">Performed a full thermoeconomic analysis of one of America's largest coal-fired power stations. Built an EES (Engineering Equation Solver) model to evaluate a 930 MW Rankine cycle unit, conducting sensitivity studies across 6 decision variables and executing 4 distinct optimizations balancing exergy destruction, initial capital cost, and lifetime cost.</p>
+      <div class="project-highlights">
+        <div class="highlight">
+          <div class="highlight-icon"></div>
+          <div class="highlight-text"><strong>4 optimizations completed:</strong> minimum exergy destruction, least initial cost, least lifetime cost, and balanced overall</div>
+        </div>
+        <div class="highlight">
+          <div class="highlight-icon"></div>
+          <div class="highlight-text"><strong>Sensitivity analysis</strong> on turbine/pump efficiency, pressure ratios, and condenser parameters with 20+ parametric plots</div>
+        </div>
+        <div class="highlight">
+          <div class="highlight-icon"></div>
+          <div class="highlight-text"><strong>Cost modeling</strong> using Bejan's thermoeconomic framework, calculating cost flow rates at each state point</div>
+        </div>
+        <div class="highlight">
+          <div class="highlight-icon"></div>
+          <div class="highlight-text"><strong>Decision matrix approach</strong> balancing efficiency ($0.98/kWh) against environmental impact (CO₂ per kWh)</div>
+        </div>
+      </div>
+      <div class="project-tags">
+        <span class="tag">Thermodynamics</span>
+        <span class="tag">EES</span>
+        <span class="tag">Exergy Analysis</span>
+        <span class="tag">Rankine Cycle</span>
+        <span class="tag">Sensitivity Studies</span>
+        <span class="tag">Cost Modeling</span>
+        <span class="tag">Optimization</span>
+      </div>
+    </div>
+
+    <!-- Project 4: Trailer Hitch FEA -->
+    <div class="project-card">
+      <div class="project-header">
+        <div>
+          <div class="project-number">04 — Machine Design & FEA</div>
+          <div class="project-title">Trailer Hitch Design & Finite Element Analysis</div>
+        </div>
+        <div class="project-course">ENGR 322 · Mar 2024</div>
+      </div>
+      <p class="project-desc">Designed and simulated a trailer hitch for a Honda Pilot using Autodesk Inventor. The hitch was modeled to support a Gross Towing Weight of 8,000 lbs and maximum towing capacity of 800 lbs. Conducted FEA stress and displacement analysis to validate the design, identifying critical stress concentrations at the hitch insert due to moment arm effects.</p>
+      <div class="project-highlights">
+        <div class="highlight">
+          <div class="highlight-icon"></div>
+          <div class="highlight-text"><strong>Full 3D CAD model</strong> with multi-component assembly in Autodesk Inventor</div>
+        </div>
+        <div class="highlight">
+          <div class="highlight-icon"></div>
+          <div class="highlight-text"><strong>FEA validation</strong> for 8,000 lb gross towing weight with steel alloy (E = 2.97×10⁷ psi)</div>
+        </div>
+        <div class="highlight">
+          <div class="highlight-icon"></div>
+          <div class="highlight-text"><strong>Stress & displacement mapping</strong> identifying maximum deformation zones at hitch insert</div>
+        </div>
+        <div class="highlight">
+          <div class="highlight-icon"></div>
+          <div class="highlight-text"><strong>Design recommendation:</strong> higher-strength steel for insert and reinforced hitch pin to reduce moment arm displacement</div>
+        </div>
+      </div>
+      <div class="project-tags">
+        <span class="tag">Autodesk Inventor</span>
+        <span class="tag">FEA</span>
+        <span class="tag">Stress Analysis</span>
+        <span class="tag">3D CAD Modeling</span>
+        <span class="tag">Steel Alloy Design</span>
+        <span class="tag">Machine Design</span>
+      </div>
+    </div>
+
+    <!-- Project 5: Arduino Temp Control -->
+    <div class="project-card">
+      <div class="project-header">
+        <div>
+          <div class="project-number">05 — Embedded Systems & Control</div>
+          <div class="project-title">Arduino-Based Room Temperature Monitoring & Control System</div>
+        </div>
+        <div class="project-course">ENGR 315 · Dec 2024</div>
+      </div>
+      <p class="project-desc">Built a closed-loop temperature control system using Arduino to simulate room climate management. The system uses dual thermistors to monitor ambient and hot-air inflow temperatures, a relay-controlled heater cycling every 60 seconds, and an exhaust fan that activates at a 89.5°F threshold. All sensor data was visualized in real-time via a custom Tableau dashboard.</p>
+      <div class="project-highlights">
+        <div class="highlight">
+          <div class="highlight-icon"></div>
+          <div class="highlight-text"><strong>Closed-loop feedback control</strong> maintaining temperature within 85–95°F band across steady-state cycles</div>
+        </div>
+        <div class="highlight">
+          <div class="highlight-icon"></div>
+          <div class="highlight-text"><strong>Arduino C++ firmware</strong> with thermistor calibration using Steinhart-Hart equation (Beta = 3950)</div>
+        </div>
+        <div class="highlight">
+          <div class="highlight-icon"></div>
+          <div class="highlight-text"><strong>Tableau real-time dashboard</strong> displaying ambient vs. hot air temperature, fan state, and cycle timing</div>
+        </div>
+        <div class="highlight">
+          <div class="highlight-icon"></div>
+          <div class="highlight-text"><strong>Subsystem integration:</strong> servo motors (PWM), DC motors (H-bridge), LCD display, and relay control</div>
+        </div>
+      </div>
+      <div class="project-tags">
+        <span class="tag">Arduino</span>
+        <span class="tag">C++</span>
+        <span class="tag">Tableau</span>
+        <span class="tag">Feedback Control</span>
+        <span class="tag">Thermistors</span>
+        <span class="tag">PWM</span>
+        <span class="tag">H-Bridge</span>
+        <span class="tag">Data Visualization</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===== SKILLS ===== -->
+<section id="skills">
+  <div class="container">
+    <div class="section-label">Capabilities</div>
+    <h2 class="section-title">Technical Skills</h2>
+    <div class="skills-grid">
+      <div class="skill-group">
+        <div class="skill-group-title">CAD & Design</div>
+        <div class="skill-items">
+          <span class="skill-item">SolidWorks</span>
+          <span class="skill-item">AutoCAD</span>
+          <span class="skill-item">Autodesk Inventor</span>
+          <span class="skill-item">Creo</span>
+          <span class="skill-item">Revit</span>
+          <span class="skill-item">GD&T</span>
+          <span class="skill-item">3D Printing</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <div class="skill-group-title">Analysis & Simulation</div>
+        <div class="skill-items">
+          <span class="skill-item">FEA</span>
+          <span class="skill-item">Tolerance Stack-Up</span>
+          <span class="skill-item">DFM</span>
+          <span class="skill-item">EES</span>
+          <span class="skill-item">MATLAB</span>
+          <span class="skill-item">Minitab</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <div class="skill-group-title">Programming</div>
+        <div class="skill-items">
+          <span class="skill-item">Python</span>
+          <span class="skill-item">C++</span>
+          <span class="skill-item">MATLAB</span>
+          <span class="skill-item">Ladder Logic</span>
+          <span class="skill-item">Arduino</span>
+          <span class="skill-item">LabVIEW</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <div class="skill-group-title">Domain Knowledge</div>
+        <div class="skill-items">
+          <span class="skill-item">Aerospace MRO</span>
+          <span class="skill-item">Medical Devices (FDA)</span>
+          <span class="skill-item">Thermal Systems</span>
+          <span class="skill-item">Renewable Energy</span>
+          <span class="skill-item">Manufacturing</span>
+          <span class="skill-item">Embedded Systems</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== EXPERIENCE ===== -->
+<section id="experience">
+  <div class="container">
+    <div class="section-label">Experience</div>
+    <h2 class="section-title">Work History</h2>
+
+    <div class="project-card">
+      <div class="project-header">
+        <div>
+          <div class="project-number">Product Design Engineer Intern</div>
+          <div class="project-title">The Build Fellowship — Fenton, MO</div>
+        </div>
+        <div class="project-course">Aug–Sep 2024</div>
+      </div>
+      <p class="project-desc">Developed CAD models and GD&T drawings for medical device assemblies. Executed rapid prototyping cycles with user feedback integration, conducted tolerance stack-up analysis, and applied FDA design control principles to support compliant product development.</p>
+    </div>
+
+    <div class="project-card">
+      <div class="project-header">
+        <div>
+          <div class="project-number">Mechanical Engineering Intern</div>
+          <div class="project-title">Gulf Helicopter Company — Doha, Qatar</div>
+        </div>
+        <div class="project-course">Jun–Aug 2023</div>
+      </div>
+      <p class="project-desc">Performed FAA and EASA-compliant inspections on safety-critical aircraft systems and components. Executed mechanical diagnostics and structural assessments, maintained technical documentation for 50+ components, and collected field performance data to support engineering analysis.</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===== CONTACT ===== -->
+<section class="contact-section" id="contact">
+  <div class="container">
+    <div class="section-label">Get in Touch</div>
+    <h2 class="section-title">Let's Connect</h2>
+    <p style="color: var(--text-secondary); max-width: 500px; margin: 0 auto 2rem;">I'm actively seeking mechanical engineering opportunities and am open to relocating anywhere in the US. STEM OPT authorized.</p>
+    <div class="contact-links">
+      <a href="mailto:kamranibhar@live.com" class="contact-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+        kamranibhar@live.com
+      </a>
+      <a href="tel:+16162566785" class="contact-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        616-256-6785
+      </a>
+      <a href="https://linkedin.com/in/ibhar-kamran" class="contact-link" target="_blank">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+        LinkedIn
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    Ibhar Kamran — Mechanical Engineering Portfolio · 2026
+  </div>
+</footer>
+
+</body>
+</html>
